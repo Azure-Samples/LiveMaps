@@ -1,0 +1,57 @@
+@import '../../css/colors.scss';
+
+.sidenav-bar {
+  width: 280px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+  transition: width 0.1s ease-out;
+
+  .sidenav-group-content {
+    margin: 0;
+  }
+
+  &.collapsed {
+    width: 50px;
+  }
+
+  .top-group {
+    flex: 1;
+  }
+
+  .favorites-button-icon {
+    color: $tangerineYellow;
+  }
+
+  .sidenav-link {
+    background-color: #fff;
+
+    span {
+      padding-left: 10px;
+    }
+  }
+
+  .collapse-button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    button {
+      width: 48px;
+      min-width: 48px;
+      height: 48px;
+      background-color: #fff;
+      border: 0px;
+    }
+
+    .collapse-icon {
+      transition: transform 0.1s linear 0s;
+      transform: rotate(0deg);
+      &.collapsed {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}
+

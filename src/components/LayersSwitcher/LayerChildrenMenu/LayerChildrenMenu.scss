@@ -1,0 +1,18 @@
+.layers-switcher-morechildren {
+  padding: 0 4px;
+  margin: 0 8px;
+  align-self: stretch;
+  height: auto;
+}
+
+.layerchildren-callout {
+  width: 200px;
+
+  .layerchildren-search {
+    border-bottom: 1px solid #ccc;
+
+    .layerchildren-input {
+      margin: 8px;
+    }
+  }
+}

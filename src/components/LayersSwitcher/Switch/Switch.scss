@@ -1,0 +1,12 @@
+.switch-container {
+    display: flex;
+    margin-bottom: 8px;
+    align-items: baseline;
+
+    .switch-label {
+        flex: 1;
+        font-weight: 400;
+        margin: 0 16px;
+    }
+}
+

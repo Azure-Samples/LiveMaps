@@ -1,0 +1,13 @@
+.slider-chart {
+  display: flex;
+  flex-direction: row;
+  padding: 0 25px;
+
+  .chart-container {
+    flex: 1;
+  }
+
+  .label {
+    align-self: center;
+  }
+}

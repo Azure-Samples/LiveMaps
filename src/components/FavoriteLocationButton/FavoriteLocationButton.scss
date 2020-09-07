@@ -1,0 +1,23 @@
+@import '../../css/colors.scss';
+
+.favorite-location-button {
+  background: transparent;
+  color: $lightGrayishBlue;
+
+  &:hover {
+    background: transparent;
+    color: $powderBlue;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.checked {
+    color: $tangerineYellow;
+
+    &:hover {
+      color: $goldenPoppy;
+    }
+  }
+}

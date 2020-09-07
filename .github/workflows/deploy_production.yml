@@ -1,0 +1,42 @@
+name: Deploy app to production
+
+on:
+  release:
+    types:
+      - published
+
+env:
+  AZURE_WEBAPP_NAME: ssir
+  NODE_VERSION: '12.x'
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - name: npm install, build, and test
+      env:
+        REACT_APP_MAP_SUBSCRIPTION_KEY: ${{ secrets.REACT_APP_MAP_SUBSCRIPTION_KEY }}
+      run: |
+        # Build and test the project, then
+        # deploy to Azure Web App.
+        npm install
+        npm run build
+        npm run test --if-present
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: build
+        path: build
+    - name: 'Cleanup before deployment'
+      run: rm -rf node_modules
+    - name: 'Deploy to Azure WebApp'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}

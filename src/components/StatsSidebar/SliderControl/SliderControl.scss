@@ -1,0 +1,35 @@
+.slider-item {
+  width: 100%;
+  padding: 13px 25px;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+
+  .label-container {
+    display: flex;
+    flex-direction: row;
+
+    .label {
+      flex: 1;
+      cursor: default;
+    }
+    .value {
+      font-weight: 600;
+    }
+  }
+  .slider-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 5px;
+
+    .slider {
+      flex: 1;
+    }
+
+    .slidebox {
+      padding-left: 0px;
+    }
+  }
+}
+

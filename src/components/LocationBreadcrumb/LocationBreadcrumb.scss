@@ -1,0 +1,63 @@
+@import '../../css/colors.scss';
+
+.location-breadcrumb-container {
+  flex: 1;
+}
+
+.location-breadcrumb {
+  margin: 0;
+
+  .overflow-button,
+  .item-button,
+  .divider {
+    outline: none;
+    color: $gray130;
+  }
+
+  .item-button {
+    border-radius: 2px;
+    caret-color: transparent;
+
+    * {
+      pointer-events: none;
+    }
+  }
+
+  .divider {
+    padding: 0;
+    width: 16px;
+    height: 100%;
+    margin-left: 2px;
+
+    .divider-icon {
+      margin: 0;
+      font-size: 12px;
+    }
+
+    * {
+      pointer-events: none;
+    }
+  }
+
+  .list-item {
+    &:not(.final-level):last-child {
+      display: none;
+    }
+
+    &:not(:last-child) {
+      margin-right: 2px;
+    }
+
+    &:not(.final-level):nth-last-child(2) {
+      margin-right: 0;
+    }
+
+    &:last-child,
+    &:not(.final-level):nth-last-child(2) {
+      .item-button {
+        color: $gray130;
+        font-weight: 600;
+      }
+    }
+  }
+}

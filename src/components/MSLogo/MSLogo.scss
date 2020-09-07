@@ -1,0 +1,11 @@
+.ms-link {
+  display: flex;
+
+  &:not(:last-child) {
+    margin-right: 35px;
+  }
+}
+
+.ms-logo {
+  width: 108px;
+}

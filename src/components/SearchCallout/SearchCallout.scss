@@ -1,0 +1,72 @@
+@import '../../css/scrollbar.scss';
+@import '../../css/colors.scss';
+
+.search-form {
+  padding: 22px 0;
+  width: 300px;
+  max-height: 350px;
+  display: flex;
+  flex-direction: column;
+
+  .search-box-container {
+    padding: 0 12px;
+
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .items-list {
+    @include scrollbars(2px, #C4C4C4);
+
+    list-style: none;
+    padding-right: 8px;
+    padding-left: 12px;
+    margin: 0;
+    margin-right: 4px;
+    overflow-y: auto;
+    overflow-y: overlay;
+    flex: 1;
+    min-height: 0;
+
+    li {
+      &:not(:last-child) {
+        margin-bottom: 4px;
+      }
+    }
+
+    .item-content {
+      width: 100%;
+      text-align: left;
+      padding: 6px 8px;
+      border: none;
+
+      &:hover {
+        background: #c4c4c426;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &.selected {
+        border: 1px solid $primaryBlue;
+        border-radius: 2px;
+
+        color: $primaryBlue;
+      }
+
+      .item-text {
+        font-weight: 400;
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+}

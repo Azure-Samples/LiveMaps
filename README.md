@@ -1,57 +1,42 @@
-# Project Name
+# Smart Spaces
 
-(short, 1-3 sentenced, description of the project)
+Application to visualize ant interact with smart buildings using Azure Maps
 
-## Features
+![Main screen](images/app.png)
 
-This project framework provides the following features:
+## Configuration
 
-* Feature 1
-* Feature 2
-* ...
+The application is configured using [environment variables](https://create-react-app.dev/docs/adding-custom-environment-variables).
+You can pass you own configuration by changing the values in `.env` file or by passing them via command line on define
+them in your favorite CI tool.
 
-## Getting Started
+Currently the supported variables are:
 
-### Prerequisites
+- `REACT_APP_MAP_SUBSCRIPTION_KEY` (_required_) - the subscription key to your Azure Maps instance.
+- `REACT_APP_API_BASE_URL` - (_optional, defaults to `http://localhost:3001`_) - the base URL for all data-fetching facilities
+- `REACT_APP_TRACKER_HOSTNAME` - (_optional, defaults to `localhost:3001`_) - hostname of the tracker service , providing
+live data for tracking layers. Note that the value must not contain scheme.
 
-(ideally very short, if any)
+The following URLs can be defined as either relative to base url above (when starting with `/` - they will be prepended
+by base URL automatically) or as full URLs, pointing to the source other than defined by base URL.
 
-- OS
-- Library version
-- ...
+- `REACT_APP_SITEMAP_URL` (_optional, defaults to `/sitemap`_) - the URL to fetch sitemap data from
 
-### Installation
+The URLs below need to contain a `{locationPath}` placeholder which will be replaced with current location's id/path
 
-(ideally very short)
+- `REACT_APP_SENSORDATA_URL` (_optional, defaults to `/state/{locationPath}`_) - the URL to fetch sensor data from.
+- `REACT_APP_SIDEBAR_DATA_URL` (_optional, defaults to `/sidebar/{locationPath}`_) - the URL to fetch sidebar chart data from.
+- `REACT_APP_WARNINGS_DATA_URL` (_optional, defaults to `/faults/{locationPath}`_) - the URL to fetch warnings from.
 
-- npm install [package name]
-- mvn install
-- ...
+## Simulation mode
 
-### Quickstart
-(Add steps to get up and running quickly)
+Simulation mode is a way to edit available map's statesets in a convenient way by using the app's UI. Simulation mode
+can be enabled by adding `sim` parameter to URL, e.g. `"http://localhost:3000/region/campus/bldg1/f1?sim=true"`. Once
+simulation mode is enabled, simulation sliders will appear in sidebar after clicking on any room:
 
-1. git clone [repository clone url]
-2. cd [respository name]
-3. ...
+![Simulation controls](images/sim.png)
 
+## Appendix
 
-## Demo
-
-A demo app is included to show how to use the project.
-
-To run the demo, follow these steps:
-
-(Add steps to start up the demo)
-
-1.
-2.
-3.
-
-## Resources
-
-(Any additional resources or related projects)
-
-- Link to supporting information
-- Link to similar sample
-- ...
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). For more details
+about development and configuration refer to the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

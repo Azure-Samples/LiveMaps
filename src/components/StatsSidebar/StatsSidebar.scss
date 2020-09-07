@@ -1,0 +1,8 @@
+.stats-sidebar {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden auto;
+    width: 400px;
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+}

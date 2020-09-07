@@ -1,0 +1,32 @@
+name: Build app
+
+on:
+  pull_request:
+
+env:
+  NODE_VERSION: '12.x'
+
+jobs:
+  build:
+    name: Build app
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - name: npm install, build, and test
+      env:
+        REACT_APP_MAP_SUBSCRIPTION_KEY: ${{ secrets.REACT_APP_MAP_SUBSCRIPTION_KEY }}
+      run: |
+        # Build and test the project, then
+        # deploy to Azure Web App.
+        npm install
+        npm run build
+        npm run test --if-present
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: build
+        path: build
