@@ -1,10 +1,25 @@
-# Smart Spaces
+# Live Maps
 
-Application to visualize ant interact with smart buildings using Azure Maps
+Sample Application to provide indoor maps visualization of IoT data on top of Azure Maps using [Azure Maps Creator](https://azure.microsoft.com/en-us/blog/azure-maps-creator-now-available-in-preview/)
 
 ![Main screen](images/app.png)
 
-## Configuration
+## Sample Architecture
+
+The image bellow illustrates where the indoor maps integration elements fit into a larger, end-to-end IoT Smart Spaces scenario.
+
+![Sample Architecture](docs/LiveMapsArchitecture.png)
+
+## Prerequisites
+
+    - [Make an Azure Maps account](https://docs.microsoft.com/en-us/azure/azure-maps/quick-demo-map-app#create-an-azure-maps-account)
+    - [Obtain a subscription key](https://docs.microsoft.com/en-us/azure/azure-maps/quick-demo-map-app#get-the-primary-key-for-your-account)
+    - [Create Azure Maps Creator resource](https://docs.microsoft.com/en-us/azure/azure-maps/how-to-manage-creator)
+    - Follow the Azure Maps [Tutorial: Use Azure Maps Creator to create indoor maps](https://docs.microsoft.com/en-us/azure/azure-maps/tutorial-creator-indoor-maps) to create an Azure maps indoor map.
+    - Upload your Own Drawing package or use sample drawing as a starter
+    - Create Feature statesets for each dimension of your data that needs to be visualized separetely
+
+## Web App Configuration
 
 The application is configured using [environment variables](https://create-react-app.dev/docs/adding-custom-environment-variables).
 You can pass you own configuration by changing the values in `.env` file or by passing them via command line on define
@@ -27,6 +42,10 @@ The URLs below need to contain a `{locationPath}` placeholder which will be repl
 - `REACT_APP_SENSORDATA_URL` (_optional, defaults to `/state/{locationPath}`_) - the URL to fetch sensor data from.
 - `REACT_APP_SIDEBAR_DATA_URL` (_optional, defaults to `/sidebar/{locationPath}`_) - the URL to fetch sidebar chart data from.
 - `REACT_APP_WARNINGS_DATA_URL` (_optional, defaults to `/faults/{locationPath}`_) - the URL to fetch warnings from.
+
+## Server side configuration
+
+Web application requires data feeds for visualizing.
 
 ## Simulation mode
 
