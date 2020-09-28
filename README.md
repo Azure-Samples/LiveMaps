@@ -244,6 +244,34 @@ Here is an example of the configuration file used by the application:
         }
     }
 
+## Current state data
+
+To minimize number of requests to Azure Maps, application caches current states, here is file sample:
+
+    {
+        "pugetsound/westcampus/b121/LVL20/13": {
+            "states": {
+                "temperature": "79",
+                "occupancy": "6"
+            },
+            "unitName": "UNIT72"
+        },
+        "pugetsound/westcampus/b121/LVL20/1055": {
+            "states": {
+                "temperature": "82",
+                "occupancy": "14"
+            },
+            "unitName": "UNIT71"
+        },
+        "pugetsound/westcampus/b121/LVL20/1031": {
+            "states": {
+                "temperature": "83",
+                "occupancy": "17"
+            },
+            "unitName": "UNIT70"
+        }
+    }
+
 ## Simulation mode
 
 Simulation mode is a way to edit available map's statesets in a convenient way by using the app's UI. Simulation mode
