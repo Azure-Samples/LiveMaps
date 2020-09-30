@@ -246,7 +246,8 @@ Here is an example of the configuration file used by the application:
 
 ## Current state data
 
-To minimize number of requests to Azure Maps, application caches current states, here is file sample:
+To minimize number of requests to Azure Maps, application caches current states. By comparing current state with the published one we make sure to publish only updated states.
+Here is file sample:
 
     {
         "pugetsound/westcampus/b121/LVL20/13": {
@@ -280,7 +281,30 @@ simulation mode is enabled, simulation sliders will appear in sidebar after clic
 
 ![Simulation controls](images/sim.png)
 
-## Appendix
+## Additional Resources
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). For more details
-about development and configuration refer to the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+* [Azure Maps (main site)](https://azure.com/maps)
+* [Azure Maps Documentation](https://docs.microsoft.com/azure/azure-maps/index)
+* [Azure Maps Blog](https://azure.microsoft.com/blog/topics/azure-maps/)
+* [Microsoft Q&A](https://docs.microsoft.com/answers/topics/azure-maps.html)
+* [Azure Maps feedback](https://feedback.azure.com/forums/909172-azure-maps)
+
+## Contributing
+
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
+the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
+
+When you submit a pull request, a CLA bot will automatically determine whether you need to provide
+a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
+provided by the bot. You will only need to do this once across all repos using our CLA.
+
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
+For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
+contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## License
+
+MIT
+ 
+See [License](https://github.com/Azure-Samples/LiveMaps/blob/main/LICENSE.md) for full license text.
