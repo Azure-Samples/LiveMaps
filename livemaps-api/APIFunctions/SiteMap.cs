@@ -1,19 +1,14 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Microsoft.WindowsAzure.Storage.Blob;
-using System.Text;
-using System.Collections.Generic;
-using ssir.api.Models;
-using System.Data.SqlClient;
 using ssir.api.Services;
-using System.Linq;
 
 namespace ssir.api
 {
@@ -22,7 +17,7 @@ namespace ssir.api
         [FunctionName("SiteMap")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            [Blob("shared", Connection = "AzureWebJobsStorage")] CloudBlobContainer container,
+            [Blob("shared", Connection = "AzureWebJobsStorage")] BlobContainerClient container,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -47,7 +42,7 @@ namespace ssir.api
             if (prerequisites)
             {
                 await container.CreateIfNotExistsAsync();
-                var siteMapRef = container.GetBlockBlobReference(siteMapFile);                
+                var siteMapRef = container.GetBlobClient(siteMapFile);                
 
                 try
                 {
@@ -62,7 +57,7 @@ namespace ssir.api
                         {                            
                             using (var ms = new MemoryStream())
                             {
-                                await siteMapRef.DownloadToStreamAsync(ms);
+                                await siteMapRef.DownloadToAsync(ms);
                                 ms.Position = 0;
                                 using (StreamReader reader = new StreamReader(ms, Encoding.UTF8))
                                 {

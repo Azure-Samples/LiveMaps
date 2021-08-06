@@ -1,25 +1,21 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection.Metadata;
+using System.Text;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.ComponentModel;
-using System.Text;
-using ssir.api.Services;
-using System.Collections.Generic;
-using ssir.api.Models;
-using Microsoft.WindowsAzure.Storage.Blob;
-using System.Linq.Expressions;
-using System.Linq;
-using System.Net.Http;
-using ssir.api.Models.Atlas;
-using System.Net;
-using System.Reflection.Metadata;
 using Newtonsoft.Json.Linq;
+using ssir.api.Models;
+using ssir.api.Models.Atlas;
+using ssir.api.Services;
 
 namespace ssir.api
 {
@@ -28,7 +24,7 @@ namespace ssir.api
         [FunctionName("PostState")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "state/{region}/{campus}/{building}/{floor}/{room}")] HttpRequest req,
-            [Blob("shared", Connection = "AzureWebJobsStorage")] CloudBlobContainer container,
+            [Blob("shared", Connection = "AzureWebJobsStorage")] BlobContainerClient container,
             string region,
             string campus,
             string building, 
@@ -61,7 +57,7 @@ namespace ssir.api
             
 
             var atlasFeaturesFileName = $"{region}_{campus}_{building}_featuremap.json".ToLower();
-            var featureMapref = container.GetBlockBlobReference(atlasFeaturesFileName);
+            var featureMapref = container.GetBlobClient(atlasFeaturesFileName);
            
             List<Feature> features;
             

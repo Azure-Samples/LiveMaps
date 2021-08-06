@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Azure.EventHubs;
+using Azure.Messaging.EventHubs;
+using Azure.Storage.Blobs;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ssir.api.Models;
@@ -22,7 +20,7 @@ namespace AzureMapsStatusPublisher
 
         [FunctionName("UpdateFeatureState")]
         public static async Task Run([EventHubTrigger("updatestate", Connection = "EventHubCS")] EventData[] events,
-                                      [Blob("refdata", Connection = "AzureWebJobsStorage")] CloudBlobContainer container,
+                                      [Blob("refdata", Connection = "AzureWebJobsStorage")] BlobContainerClient container,
                                       ILogger log)
         {
             var atlasConfigFile = Environment.GetEnvironmentVariable("AtlasConfigFile") ?? "atlasConfig.json";
@@ -51,12 +49,12 @@ namespace AzureMapsStatusPublisher
             if (prerequisites)
             {
                 await container.CreateIfNotExistsAsync();
-                var bacmapRef = container.GetBlockBlobReference(recentDataFile);
+                var bacmapRef = container.GetBlobClient(recentDataFile);
 
                 IEnumerable<dynamic> recentdata;
                 using (var ms = new MemoryStream())
                 {
-                    await bacmapRef.DownloadToStreamAsync(ms);
+                    await bacmapRef.DownloadToAsync(ms);
                     ms.Position = 0;
                     using (StreamReader reader = new StreamReader(ms, Encoding.UTF8))
                     {
@@ -69,7 +67,7 @@ namespace AzureMapsStatusPublisher
                 {
                     try
                     {
-                        string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
+                        string messageBody = eventData.EventBody.ToString();
                         var dataItems = JsonConvert.DeserializeObject<IEnumerable<TagObject>>(messageBody);
 
                         if (dataItems != null)
@@ -111,7 +109,7 @@ namespace AzureMapsStatusPublisher
                 if (updateRecentData)
                 {
                     var rd = JsonConvert.SerializeObject(recentdata);
-                    await bacmapRef.UploadTextAsync(rd);
+                    await bacmapRef.UploadAsync(BinaryData.FromString(rd), overwrite: true);
                 }
             }
 

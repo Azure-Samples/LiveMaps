@@ -1,22 +1,20 @@
-﻿using Microsoft.WindowsAzure.Storage.Blob;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
+using Newtonsoft.Json;
 
 namespace ssir.api.Services
 {
     public class BlobDataService
     {
-        public async Task<string> GetContextData(CloudBlobContainer container)
+        public async Task<string> GetContextData(BlobContainerClient container)
         {            
             using (var ms = new MemoryStream())
             {
                 var datafileName = BuildContextDataFileName();
-                var bacmapRef = container.GetBlockBlobReference(datafileName);
-                await bacmapRef.DownloadToStreamAsync(ms);
+                var bacmapRef = container.GetBlobClient(datafileName);
+                await bacmapRef.DownloadToAsync(ms);
                 ms.Position = 0;
                 using (StreamReader reader = new StreamReader(ms, Encoding.UTF8))
                 {
@@ -26,12 +24,12 @@ namespace ssir.api.Services
             }
         }
 
-        public async Task<T> ReadBlobData<T>(CloudBlobContainer container, string dataFileName)
+        public async Task<T> ReadBlobData<T>(BlobContainerClient container, string dataFileName)
         {
             using (var ms = new MemoryStream())
             {                
-                var dataFileRef = container.GetBlockBlobReference(dataFileName);
-                await dataFileRef.DownloadToStreamAsync(ms);
+                var dataFileRef = container.GetBlobClient(dataFileName);
+                await dataFileRef.DownloadToAsync(ms);
                 ms.Position = 0;
                 using (StreamReader reader = new StreamReader(ms, Encoding.UTF8))
                 {
