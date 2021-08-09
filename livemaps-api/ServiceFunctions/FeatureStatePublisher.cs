@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -51,17 +52,10 @@ namespace AzureMapsStatusPublisher
                 await container.CreateIfNotExistsAsync();
                 var bacmapRef = container.GetBlobClient(recentDataFile);
 
+                BlobDownloadResult result = await bacmapRef.DownloadContentAsync();
+                string deviceStateData = result.Content.ToString();
                 IEnumerable<dynamic> recentdata;
-                using (var ms = new MemoryStream())
-                {
-                    await bacmapRef.DownloadToAsync(ms);
-                    ms.Position = 0;
-                    using (StreamReader reader = new StreamReader(ms, Encoding.UTF8))
-                    {
-                        var bacmapstr = reader.ReadToEnd();
-                        recentdata = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(bacmapstr);
-                    }
-                }
+                recentdata = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(deviceStateData);
 
                 foreach (EventData eventData in events)
                 {
@@ -108,8 +102,7 @@ namespace AzureMapsStatusPublisher
                 }
                 if (updateRecentData)
                 {
-                    var rd = JsonConvert.SerializeObject(recentdata);
-                    await bacmapRef.UploadAsync(BinaryData.FromString(rd), overwrite: true);
+                    await bacmapRef.UploadAsync(BinaryData.FromObjectAsJson(recentdata), overwrite: true);
                 }
             }
 

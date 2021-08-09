@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -67,7 +67,7 @@ namespace ssir.api
                     if (useAtlas)
                     {
                         features = await MapsService.FetchFeaturesFromAtlas(buildingConfig.DatasetId, buildingConfig.SubscriptionKey);
-                        await featureMapref.UploadAsync(BinaryData.FromString(JsonConvert.SerializeObject(features)), overwrite: true);
+                        await featureMapref.UploadAsync(BinaryData.FromObjectAsJson(features), overwrite: true);
                     }
                     else
                     {
@@ -166,19 +166,10 @@ namespace ssir.api
 
         private static async Task<IEnumerable<BuildingConfig>> FetchAtlasConfig(BlobClient configRef)
         {
-            BuildingConfig[] cfg;
-            using (var ms = new MemoryStream())
-            {
-                await configRef.DownloadToAsync(ms);
-                ms.Position = 0;
-                using (StreamReader reader = new StreamReader(ms, Encoding.UTF8))
-                {
-                    var featuresStr = reader.ReadToEnd();
-                    cfg = JsonConvert.DeserializeObject<BuildingConfig[]>(featuresStr);
-                }
-            }
+            BlobDownloadResult result = await configRef.DownloadContentAsync();
+            BuildingConfig[] config = result.Content.ToObjectFromJson<BuildingConfig[]>();
 
-            return cfg;
+            return config;
         }        
     }
 }

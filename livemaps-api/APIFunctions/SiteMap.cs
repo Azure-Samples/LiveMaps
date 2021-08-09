@@ -1,8 +1,8 @@
 using System;
-using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -54,18 +54,11 @@ namespace ssir.api
                     else
                     {
                         if (prerequisites)
-                        {                            
-                            using (var ms = new MemoryStream())
-                            {
-                                await siteMapRef.DownloadToAsync(ms);
-                                ms.Position = 0;
-                                using (StreamReader reader = new StreamReader(ms, Encoding.UTF8))
-                                {
-                                    var bacmapstr = reader.ReadToEnd();
-                                    return new OkObjectResult(bacmapstr);                                    
-                                }
+                        {
+                                BlobDownloadResult result = await siteMapRef.DownloadContentAsync();
+                                string deviceStateData = result.Content.ToString();
+                                return new OkObjectResult(deviceStateData);
                             }
-                        }
                     }
                 }
                 catch (Exception ex)

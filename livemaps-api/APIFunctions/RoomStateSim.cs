@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using ssir.api.Models;
 using ssir.api.Models.Atlas;
 using ssir.api.Services;
@@ -46,7 +45,7 @@ namespace ssir.api
                     if (useAtlas)
                     {
                         features = await MapsService.FetchFeaturesFromAtlas(buildingConfig.DatasetId, buildingConfig.SubscriptionKey);
-                        await featureMapRef.UploadAsync(BinaryData.FromString(JsonConvert.SerializeObject(features)), overwrite: true);
+                        await featureMapRef.UploadAsync(BinaryData.FromObjectAsJson(features), overwrite: true);
                     }
                     else
                     {
@@ -60,7 +59,7 @@ namespace ssir.api
                             buildingStateSet.Add(name, new UnitStateSet { unitName = feature.Id, states = GetDefaultStates(rnd, buildingConfig.StateSets) });
                         }
                     }
-                    await buildingStateRef.UploadAsync(BinaryData.FromString(JsonConvert.SerializeObject(buildingStateSet)), overwrite:true);
+                    await buildingStateRef.UploadAsync(BinaryData.FromObjectAsJson(buildingStateSet), overwrite:true);
                 }
                 else
                 {

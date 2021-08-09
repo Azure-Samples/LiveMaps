@@ -1,8 +1,7 @@
 using System;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -44,16 +43,9 @@ namespace ssir.api
                 fileName = fileName.ToLower();
 
                 var devicestateref = container.GetBlobClient(fileName);
-                using (var ms = new MemoryStream())
-                {
-                    await devicestateref.DownloadToAsync(ms);
-                    ms.Position = 0;
-                    using (StreamReader reader = new StreamReader(ms, Encoding.UTF8))
-                    {
-                        var deviceStateData = reader.ReadToEnd();
-                        return new OkObjectResult(deviceStateData);
-                    }
-                };
+                BlobDownloadResult result = await devicestateref.DownloadContentAsync();
+                string deviceStateData = result.Content.ToString();
+                return new OkObjectResult(deviceStateData);
             }
             catch(Exception ex)
             {
