@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ssir.api.Models
+namespace Ssir.Api.Models
 {
     public class SiteMapItem
     {

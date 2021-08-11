@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ssir.api.Models.SideBar
+namespace Ssir.Api.Models.SideBar
 {
     public class LabelItem
     {

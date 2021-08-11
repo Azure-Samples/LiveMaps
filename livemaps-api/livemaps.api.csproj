@@ -2,13 +2,13 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
-    <RootNamespace>ssir.api</RootNamespace>
-    <AssemblyName>ssir.api</AssemblyName>
+    <RootNamespace>Ssir.Api</RootNamespace>
+    <AssemblyName>Ssir.Api</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Azure.Messaging.EventHubs" Version="5.5.0" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.9.1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventHubs" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.EventHubs" Version="5.0.0-beta.5" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="4.0.4" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.7" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />

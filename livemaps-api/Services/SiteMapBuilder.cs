@@ -1,7 +1,7 @@
-﻿using ssir.api.Models;
+﻿using Ssir.Api.Models;
 using System.Collections.Generic;
 
-namespace ssir.api.Services
+namespace Ssir.Api.Services
 {
     public class SiteMapBuilder
     {

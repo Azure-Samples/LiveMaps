@@ -12,11 +12,11 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using ssir.api.Models;
-using ssir.api.Models.Atlas;
-using ssir.api.Services;
+using Ssir.Api.Models;
+using Ssir.Api.Models.Atlas;
+using Ssir.Api.Services;
 
-namespace ssir.api
+namespace Ssir.Api
 {
     public static class Config
     {
@@ -26,14 +26,14 @@ namespace ssir.api
             [Blob("shared", Connection = "AzureWebJobsStorage")] BlobContainerClient container,
             string region,
             string campus,
-            string building,             
+            string building,
             ILogger log)
         {
             bool prerequisites = true;
             var errors = new StringBuilder();
 
             var blobDataService = new BlobDataService();
-            
+            //Get AtlasConfigFile from environment variable.
             var atlasConfigFile = Environment.GetEnvironmentVariable("AtlasConfigFile") ?? "atlasConfig.json";                     
 
             if (string.IsNullOrEmpty(building))
@@ -47,10 +47,13 @@ namespace ssir.api
             {
                 try
                 {
+                    //Create a ReadBlobData operation and return the data of the BuildingConfig.
                     var config = await blobDataService.ReadBlobData<BuildingConfig[]>(container, atlasConfigFile);
                     var buildingCfg = config.FirstOrDefault(cfg => cfg.BuildingId.ToLower() == $"{region}/{campus}/{building}".ToLower());
                     if (buildingCfg != null)
-                        result = JsonConvert.SerializeObject(buildingCfg);                  
+                    {
+                        result = JsonConvert.SerializeObject(buildingCfg);
+                    }
 
                 }
                 catch (Exception ex)
@@ -80,7 +83,9 @@ namespace ssir.api
                     var response = await client.SendAsync(requestMessage);
 
                     if (response.StatusCode != HttpStatusCode.OK)
+                    {
                         break;
+                    }
 
                     var result = await response.Content.ReadAsStringAsync();
 
@@ -88,12 +93,18 @@ namespace ssir.api
                     features.AddRange(featureCollection.Features);
 
                     if (featureCollection.NumberReturned < limit)
+                    {
                         break;
+                    }
                     var nextLink = featureCollection.links.FirstOrDefault(f => f.rel == "next");
                     if (nextLink == null)
+                    {
                         break;
+                    }
                     else
+                    {
                         url = nextLink.href + $"&subscription-key={atlasSubscriptionKey}";
+                    }   
                 }
             }
 

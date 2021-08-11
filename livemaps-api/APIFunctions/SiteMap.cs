@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using ssir.api.Services;
+using Ssir.Api.Services;
 
-namespace ssir.api
+namespace Ssir.Api
 {
     public static class SiteMap
     {
@@ -41,24 +41,29 @@ namespace ssir.api
             
             if (prerequisites)
             {
+                //Create a new container if the container not exists.
                 await container.CreateIfNotExistsAsync();
+                //Create a Blob client.
                 var siteMapRef = container.GetBlobClient(siteMapFile);                
 
                 try
                 {
-                    if (!string.IsNullOrEmpty(rebuild))  
+                    if (!string.IsNullOrEmpty(rebuild))
+                    {
                         if (prerequisites)
                         {
-                           // Custom Sitemap builder code                       
-                    }
+                            // Custom Sitemap builder code                       
+                        }
+                    }  
                     else
                     {
                         if (prerequisites)
                         {
-                                BlobDownloadResult result = await siteMapRef.DownloadContentAsync();
-                                string deviceStateData = result.Content.ToString();
-                                return new OkObjectResult(deviceStateData);
-                            }
+                            //Downloads a blob from the service.
+                            BlobDownloadResult result = await siteMapRef.DownloadContentAsync();
+                            string deviceStateData = result.Content.ToString();
+                            return new OkObjectResult(deviceStateData);
+                        }
                     }
                 }
                 catch (Exception ex)

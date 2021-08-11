@@ -8,7 +8,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace ssir.api
+namespace Ssir.Api
 {
     public static class DeviceState
     {
@@ -35,9 +35,10 @@ namespace ssir.api
                 }
 
                 fileName = fileName.ToLower();
-               
-                var devicestateref = container.GetBlobClient(fileName);
-                BlobDownloadResult result = await devicestateref.DownloadContentAsync();
+                //Create a Blob client.
+                var deviceStateRef = container.GetBlobClient(fileName);
+                //Downloads a blob from the service.
+                BlobDownloadResult result = await deviceStateRef.DownloadContentAsync();
                 string deviceStateData = result.Content.ToString();
                 return new OkObjectResult(deviceStateData);
             }

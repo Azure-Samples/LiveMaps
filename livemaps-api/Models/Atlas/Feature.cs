@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ssir.api.Models.Atlas
+namespace Ssir.Api.Models.Atlas
 {
     public partial class Feature
     {

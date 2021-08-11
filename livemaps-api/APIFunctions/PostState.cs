@@ -13,11 +13,11 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using ssir.api.Models;
-using ssir.api.Models.Atlas;
-using ssir.api.Services;
+using Ssir.Api.Models;
+using Ssir.Api.Models.Atlas;
+using Ssir.Api.Services;
 
-namespace ssir.api
+namespace Ssir.Api
 {
     public static class PostState
     {
@@ -27,14 +27,14 @@ namespace ssir.api
             [Blob("shared", Connection = "AzureWebJobsStorage")] BlobContainerClient container,
             string region,
             string campus,
-            string building, 
+            string building,
             string floor,
             string room,
             ILogger log)
         {
             bool prerequisites = true;
-            var errors = new StringBuilder();           
-           
+            var errors = new StringBuilder();
+            //Get AtlasConfigFile from environment variable.
             var atlasConfigFile = Environment.GetEnvironmentVariable("AtlasConfigFile") ?? "atlasConfig.json";
 
             if (string.IsNullOrEmpty(room))
@@ -44,6 +44,7 @@ namespace ssir.api
             }
             
             var blobDataService = new BlobDataService();
+            //Create a ReadBlobData operation and return the data of the BuildingConfig.
             var atlasConfig = await blobDataService.ReadBlobData<BuildingConfig[]>(container, atlasConfigFile);
             var buildingConfig = atlasConfig.FirstOrDefault(b => b.BuildingId.ToLower() == $"{region}/{campus}/{building}".ToLower());
 
@@ -51,12 +52,13 @@ namespace ssir.api
             {
                 prerequisites = false;
                 errors.Append($"Atlas config for {building} was not found");
-            }            
+            }
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             
 
             var atlasFeaturesFileName = $"{region}_{campus}_{building}_featuremap.json".ToLower();
+            //Create a Blob client.
             var featureMapref = container.GetBlobClient(atlasFeaturesFileName);
            
             List<Feature> features;
@@ -82,7 +84,7 @@ namespace ssir.api
                             value = jp.Value.ToString();
                         }
                     }
-                                        
+
                     var stateSetCfg = buildingConfig.StateSets.FirstOrDefault(ss => ss.StateSetName.ToLower() == stateSet.ToLower());
 
                     if(stateSetCfg != null)
@@ -93,8 +95,8 @@ namespace ssir.api
                             var mapsService = new MapsService(buildingConfig.SubscriptionKey, buildingConfig.DatasetId, stateSetCfg.StateSetId.ToString());
                             await mapsService.UpdateTagState(stateSetCfg.StateSetName, feature.Id, value);
                         }
-                    }                    
-                    
+                    }
+
                 }
                 catch (Exception ex)
                 {

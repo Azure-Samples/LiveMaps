@@ -12,11 +12,11 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using ssir.api.Models;
-using ssir.api.Models.Atlas;
-using ssir.api.Services;
+using Ssir.Api.Models;
+using Ssir.Api.Models.Atlas;
+using Ssir.Api.Services;
 
-namespace ssir.api
+namespace Ssir.Api
 {
     public static class RoomData
     {
@@ -26,12 +26,12 @@ namespace ssir.api
             [Blob("shared", Connection = "AzureWebJobsStorage")] BlobContainerClient container,
             string region,
             string campus,
-            string building,            
+            string building,
             ILogger log)
         {
             bool prerequisites = true;
-            var errors = new StringBuilder();           
-           
+            var errors = new StringBuilder();
+            //Get the AtlasConfigFile from environment variable
             var atlasConfigFile = Environment.GetEnvironmentVariable("AtlasConfigFile") ?? "atlasConfig.json";
             
             bool rebuild = false;
@@ -44,6 +44,7 @@ namespace ssir.api
             }
             
             var blobDataService = new BlobDataService();
+            //Create a ReadBlobData operation and return the data of the BuildingConfig.
             var atlasConfig = await blobDataService.ReadBlobData<BuildingConfig[]>(container, atlasConfigFile);
             var buildingConfig = atlasConfig.FirstOrDefault(b => b.BuildingId.ToLower() == $"{region}/{campus}/{building}".ToLower());
 
@@ -54,7 +55,9 @@ namespace ssir.api
             }
 
             var atlasFeaturesFileName = $"{region}_{campus}_{building}_FeatureMap.json".ToLower();
+            // Create a Blob client
             var featureMapref = container.GetBlobClient(atlasFeaturesFileName);
+            //Check the blob is already exists.
             bool useAtlas = rebuild || !await featureMapref.ExistsAsync();
             List<Feature> features;
             
@@ -66,11 +69,14 @@ namespace ssir.api
                 {
                     if (useAtlas)
                     {
+                        //Get the list of Feature.
                         features = await MapsService.FetchFeaturesFromAtlas(buildingConfig.DatasetId, buildingConfig.SubscriptionKey);
+                        //Create a Blob async upload operation.
                         await featureMapref.UploadAsync(BinaryData.FromObjectAsJson(features), overwrite: true);
                     }
                     else
                     {
+                        //Create a ReadBlobData operation and return the data of the BuildingConfig.
                         features = await blobDataService.ReadBlobData<List<Feature>>(container, atlasFeaturesFileName);                       
                     }
                     
