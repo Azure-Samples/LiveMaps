@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Ssir.Api.Models.Atlas;
+﻿using Ssir.Api.Models.Atlas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Ssir.Api.Services
@@ -65,7 +65,7 @@ namespace Ssir.Api.Services
                 };
 
                 //Serialize the message body.
-                string content = JsonConvert.SerializeObject(bodymessage);
+                string content = JsonSerializer.Serialize(bodymessage);
 
                 requestMessage.Content = new StringContent(content);
                 requestMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -101,7 +101,7 @@ namespace Ssir.Api.Services
                     //Serialize the HTTP content to a string as an asynchronous operation.
                     var result = await response.Content.ReadAsStringAsync();
                     //Parse the result into FeatureCollection class
-                    var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(result);
+                    var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(result);
                     features.AddRange(featureCollection.Features);
 
                     if (featureCollection.NumberReturned < limit)

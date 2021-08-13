@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Ssir.Api.Models;
 using Ssir.Api.Services;
 
@@ -55,7 +54,7 @@ namespace AzureMapsStatusPublisher
                 BlobDownloadResult result = await bacmapRef.DownloadContentAsync();
                 string deviceStateData = result.Content.ToString();
                 IEnumerable<dynamic> recentData;
-                recentData = JsonConvert.DeserializeObject<IEnumerable<dynamic>>(deviceStateData);
+                recentData = JsonSerializer.Deserialize<IEnumerable<dynamic>>(deviceStateData);
 
                 foreach (EventData eventData in events)
                 {
@@ -64,7 +63,7 @@ namespace AzureMapsStatusPublisher
                         //Convert EventBody Type to string.
                         string messageBody = eventData.EventBody.ToString();
                         //Deserialize the EventBody data to TagObject class.
-                        var dataItems = JsonConvert.DeserializeObject<IEnumerable<TagObject>>(messageBody);
+                        var dataItems = JsonSerializer.Deserialize<IEnumerable<TagObject>>(messageBody);
 
                         if (dataItems != null)
                         {
@@ -78,7 +77,7 @@ namespace AzureMapsStatusPublisher
                                         var cv = i.CurrentValue;
                                         if (cv != null)
                                         {
-                                            Double.TryParse(((JValue)cv).Value.ToString(), out curVal);
+                                            Double.TryParse(((JsonProperty)cv).Value.ToString(), out curVal);
                                         }
                                         if (dataItem.Value != curVal)
                                         {

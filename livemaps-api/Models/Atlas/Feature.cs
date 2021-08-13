@@ -1,25 +1,25 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Ssir.Api.Models.Atlas
 {
     public partial class Feature
     {
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("geometry")]
+        [JsonPropertyName("geometry")]
         public Geometry Geometry { get; set; }
 
-        [JsonProperty("properties")]
+        [JsonPropertyName("properties")]
         public Properties Properties { get; set; }
 
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("categoryId")]
+        [JsonPropertyName("categoryId")]
         public string categoryId { get; set; }
     }
 

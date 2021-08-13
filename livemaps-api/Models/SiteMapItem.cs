@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Ssir.Api.Models
 {
@@ -30,7 +30,7 @@ namespace Ssir.Api.Models
             set { _area = value; }
         }
         public HashSet<string> items;
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public BuildingConfig config { get; set; }
     }
 }

@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Ssir.Api.Models.Atlas
 {
     public partial class Geometry
     {
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("coordinates")]
+        [JsonPropertyName("coordinates")]
         public double[][][] Coordinates { get; set; }
     }
 }

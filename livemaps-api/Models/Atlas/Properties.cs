@@ -1,37 +1,37 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Ssir.Api.Models.Atlas
 {
     public partial class Properties
     {
-        [JsonProperty("originalId")]
+        [JsonPropertyName("originalId")]
         public Guid OriginalId { get; set; }
 
-        [JsonProperty("categoryId")]
+        [JsonPropertyName("categoryId")]
         public string CategoryId { get; set; }
 
-        [JsonProperty("isOpenArea")]
+        [JsonPropertyName("isOpenArea")]
         public bool IsOpenArea { get; set; }
 
-        [JsonProperty("navigableBy")]
+        [JsonPropertyName("navigableBy")]
         public string[] NavigableBy { get; set; }
 
-        [JsonProperty("routeThroughBehavior")]
+        [JsonPropertyName("routeThroughBehavior")]
         public string RouteThroughBehavior { get; set; }
 
-        [JsonProperty("levelId")]
+        [JsonPropertyName("levelId")]
         public string LevelId { get; set; }
 
-        [JsonProperty("occupants")]
+        [JsonPropertyName("occupants")]
         public object[] Occupants { get; set; }
 
-        [JsonProperty("addressId")]
+        [JsonPropertyName("addressId")]
         public string AddressId { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
     }
 }

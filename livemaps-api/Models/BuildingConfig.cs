@@ -1,37 +1,37 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Ssir.Api.Models
 {
     public class BuildingConfig
     {
-        [JsonProperty("buildingId")]
+        [JsonPropertyName("buildingId")]
         public string BuildingId { get; set; }
 
-        [JsonProperty("subscriptionKey")]
+        [JsonPropertyName("subscriptionKey")]
         public string SubscriptionKey { get; set; }
 
-        [JsonProperty("datasetId")]
+        [JsonPropertyName("datasetId")]
         public string DatasetId { get; set; }
 
-        [JsonProperty("tilesetId")]
+        [JsonPropertyName("tilesetId")]
         public Guid TilesetId { get; set; }
 
-        [JsonProperty("stateSets")]
+        [JsonPropertyName("stateSets")]
         public StateSet[] StateSets { get; set; }
 
-        [JsonProperty("facilityId")]
+        [JsonPropertyName("facilityId")]
         public string FacilityId { get; set; }
     }
 
     public partial class StateSet
     {
-        [JsonProperty("stateSetName")]
+        [JsonPropertyName("stateSetName")]
         public string StateSetName { get; set; }
 
-        [JsonProperty("stateSetId")]
+        [JsonPropertyName("stateSetId")]
         public Guid StateSetId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Ssir.Api.Models;
 using Ssir.Api.Models.Atlas;
 using Ssir.Api.Services;
@@ -52,7 +52,7 @@ namespace Ssir.Api
                     var buildingCfg = config.FirstOrDefault(cfg => cfg.BuildingId.ToLower() == $"{region}/{campus}/{building}".ToLower());
                     if (buildingCfg != null)
                     {
-                        result = JsonConvert.SerializeObject(buildingCfg);
+                        result = JsonSerializer.Serialize(buildingCfg);
                     }
 
                 }
@@ -89,7 +89,7 @@ namespace Ssir.Api
 
                     var result = await response.Content.ReadAsStringAsync();
 
-                    var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(result);
+                    var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(result);
                     features.AddRange(featureCollection.Features);
 
                     if (featureCollection.NumberReturned < limit)

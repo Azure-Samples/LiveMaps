@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Http;
@@ -11,8 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Ssir.Api.Models;
 using Ssir.Api.Models.Atlas;
 using Ssir.Api.Services;
@@ -71,14 +70,13 @@ namespace Ssir.Api
                 {
                     features = await blobDataService.ReadBlobData<List<Feature>>(container, atlasFeaturesFileName);
 
-                    var jo = JObject.Parse(requestBody);
+                    var jo = JsonDocument.Parse(requestBody);
                     string stateSet = null;
                     string value = null;
-                    
                     if (jo != null)
                     {
-                        var jp = jo.First as JProperty;
-                        if(jp != null)
+                        var jp = jo.RootElement.EnumerateObject().First();
+                        if (jp.Name != null)
                         {
                             stateSet = jp.Name;
                             value = jp.Value.ToString();
@@ -103,7 +101,7 @@ namespace Ssir.Api
                     log.LogError(ex.Message);
                 }
 
-                return new OkObjectResult(JsonConvert.SerializeObject(rdi));
+                return new OkObjectResult(JsonSerializer.Serialize(rdi));
             }
             else
             {

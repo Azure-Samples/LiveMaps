@@ -1,7 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text.Json;
+using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Newtonsoft.Json;
 
 namespace Ssir.Api.Services
 {
@@ -27,7 +27,7 @@ namespace Ssir.Api.Services
             //Downloads a blob from the service.
             BlobDownloadResult result = await dataFileRef.DownloadContentAsync();
             string deviceStateData = result.Content.ToString();
-            return JsonConvert.DeserializeObject<T>(deviceStateData);
+            return JsonSerializer.Deserialize<T>(deviceStateData);
         }
 
         public string BuildContextDataFileName()

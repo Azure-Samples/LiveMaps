@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Ssir.Api.Models;
 using Ssir.Api.Models.Atlas;
 using Ssir.Api.Services;
@@ -106,7 +106,7 @@ namespace Ssir.Api
                     log.LogError(ex.Message);
                 }
 
-                return new OkObjectResult(JsonConvert.SerializeObject(rdi));
+                return new OkObjectResult(JsonSerializer.Serialize(rdi));
             }
             else
             {
