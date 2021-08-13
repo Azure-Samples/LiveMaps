@@ -88,8 +88,8 @@ namespace Ssir.Api
                     if(stateSetCfg != null)
                     {
                         var feature = features.FirstOrDefault(f => f.Properties.Name.ToLower().Replace("-","") == room.ToLower().Replace("-",""));
-                        if (feature != null) {
-
+                        if (feature != null)
+                        {
                             var mapsService = new MapsService(buildingConfig.SubscriptionKey, buildingConfig.DatasetId, stateSetCfg.StateSetId.ToString());
                             await mapsService.UpdateTagState(stateSetCfg.StateSetName, feature.Id, value);
                         }
