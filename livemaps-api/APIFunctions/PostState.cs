@@ -20,6 +20,10 @@ namespace Ssir.Api
 {
     public static class PostState
     {
+        /*
+         PostState Function obtains the data to be updated through the featuremap file in the blob, and then uses the updatetagstate method in the mapsservice class to update the specified feature state.
+         You can get the data of the featuremap file through the AtlasUnits Function, and then store it in the blob.
+         */
         [FunctionName("PostState")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "state/{region}/{campus}/{building}/{floor}/{room}")] HttpRequest req,

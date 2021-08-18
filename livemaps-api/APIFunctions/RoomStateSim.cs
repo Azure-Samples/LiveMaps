@@ -16,6 +16,9 @@ namespace Ssir.Api
 {
     public static class RoomStateSim
     {
+        /*
+         Through RoomStateSim Function, you can get the room feature map from the blob, so as to obtain the status of the room
+         */
         [FunctionName("RoomStateSim")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "statesim")] HttpRequest req,
@@ -91,7 +94,7 @@ namespace Ssir.Api
                                         buildingState.Value.unitName,
                                         buildingState.Value.states[stateSetCfg.StateSetName]);
                             }
-                        }                       
+                        }
                        
                     }                   
                     

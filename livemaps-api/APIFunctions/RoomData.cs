@@ -20,6 +20,9 @@ namespace Ssir.Api
 {
     public static class RoomData
     {
+        /*
+         RoomData API function returns array with units description taken from Azure maps API after dwg package is uploaded there.
+         */
         [FunctionName("RoomData")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "roomdata/{region}/{campus}/{building}")] HttpRequest req,

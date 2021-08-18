@@ -12,6 +12,9 @@ namespace Ssir.Api
 {
     public static class DeviceState
     {
+        /*
+         The DeviceState Function obtains the current device state by obtaining the currentstate file in the blob.
+         */
         [FunctionName("DeviceState")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "state/{region}/{campus}/{building}/{level?}")] HttpRequest req,

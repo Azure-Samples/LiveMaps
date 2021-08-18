@@ -14,6 +14,9 @@ namespace Ssir.Api
 {
     public static class SiteMap
     {
+        /*
+         Through SiteMap Function, you can obtain the site map file from the blob, which can be used by the frontend client
+         */
         [FunctionName("SiteMap")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
@@ -37,7 +40,7 @@ namespace Ssir.Api
             }
 
             var atlasConfigFile = Environment.GetEnvironmentVariable("AtlasConfigFile") ?? "atlasConfig.json";
-            var bds = new BlobDataService(); 
+            var bds = new BlobDataService();
             
             if (prerequisites)
             {

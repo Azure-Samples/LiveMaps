@@ -20,6 +20,12 @@ namespace Ssir.Api
 {
     public static class Config
     {
+        /*
+        LiveMaps application supports visualization for multiple Azure Maps Creator datasets and statesets,
+        it requires multiple configs to be stored.
+        Config file is stored at the Azure blob storage and available to the frontend client by Config Function.
+        Here is an example of the how to get the configuration.
+         */
         [FunctionName("Config")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "config/{region}/{campus}/{building}")] HttpRequest req,

@@ -12,13 +12,16 @@ namespace Ssir.Api
 {
     public static class Warnings
     {
+        /*
+         Faults data rendered on the sidebar available by the Warnings Function.
+         */
         [FunctionName("Warnings")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "faults/{region}/{campus}/{building}")] HttpRequest req,
             [Blob("shared", Connection = "AzureWebJobsStorage")] BlobContainerClient container,
             string region,
             string campus,
-            string building,            
+            string building,
             ILogger log)
         {
             string fileName;

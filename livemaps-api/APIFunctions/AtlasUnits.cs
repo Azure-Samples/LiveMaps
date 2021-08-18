@@ -13,6 +13,9 @@ namespace Ssir.Api.APIFunctions
 {
     public static class AtlasUnits
     {
+        /*
+         Through the AtlasUnits Function, you can send an HTTP request about the REST API of Azure Map to query for unit feature collection.
+         */
         [FunctionName("AtlasUnits")]
         public static async Task<IActionResult> Run(
             //This HTTP trigger sends a client HTTP request through the atlasSubscriptionKey and atlasDataSetId parameters to get featureIds.
@@ -27,7 +30,7 @@ namespace Ssir.Api.APIFunctions
 
             using (var client = new HttpClient())
             {
-                var baseUri = new UriBuilder($"https://atlas.microsoft.com/wfs/datasets/{atlasDataSetId}/collections/unit/items?api-version=1.0&subscription-key={atlasSubscriptionKey}&limit=2");
+                var baseUri = new UriBuilder($"https://us.atlas.microsoft.com/wfs/datasets/{atlasDataSetId}/collections/unit/items?api-version=1.0&subscription-key={atlasSubscriptionKey}&limit=2");
                 HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Get, baseUri.ToString());
                 //Send an HTTP request as an asynchronous operation.
                 var response = await client.SendAsync(requestMessage);
@@ -37,10 +40,7 @@ namespace Ssir.Api.APIFunctions
                 var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(result);
                 if(featureCollection != null && featureCollection.Features != null)
                 {
-                    foreach(var feature in featureCollection.Features)
-                    {
-                        var a = feature.Id;
-                    }
+                    return new OkObjectResult(featureCollection.Features);
                 }
             }
 

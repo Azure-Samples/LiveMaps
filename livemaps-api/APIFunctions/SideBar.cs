@@ -12,6 +12,9 @@ namespace Ssir.Api
 {
     public static class SideBar
     {
+        /*
+         Sidebar function can display vizal in the sidebar according to the data received from the sidebar file in the blob. 
+         */
         [FunctionName("SideBar")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "sidebar/{region}/{campus}/{building?}/{level?}/{unit?}")] HttpRequest req,
