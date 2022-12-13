@@ -4,7 +4,7 @@
   "private": true,
   "proxy": "https://energypcs.blob.core.windows.net/",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.3"
   },
   "devDependencies": {
     "@fluentui/react": "^7.113.0",
